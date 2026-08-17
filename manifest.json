@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "nkarl.fcitx-active-input-lang",
+  "name": "Active Input Method Language Indicator (Fcitx)",
+  "version": "0.7.0",
+  "author": "Kyle Nguyen",
+  "license": "MIT",
+  "description": "Display the language of your active input method. Configure and cycle through selected input methods. Works with Fcitx 5 input methods.",
+  "kinds": ["bar-widget", "service"],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml",
+    "service": "Service.qml"
+  },
+  "barWidget": {
+    "displayName": "Input Methods",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
