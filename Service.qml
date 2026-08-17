@@ -8,7 +8,7 @@ Item {
     property var availableMethods: []
     property string pendingActivation: ""
     property string activationTarget: ""
-    readonly property string monitorPath: Qt.resolvedUrl("fcitx-state-monitor").toString().replace(/^file:\/\//, "")
+    readonly property string monitorPath: Qt.resolvedUrl("build-and-run.sh").toString().replace(/^file:\/\//, "")
 
     function refreshMethods() {
         if (!listProcess.running)

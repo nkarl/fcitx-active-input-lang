@@ -9,13 +9,14 @@ group.
 - Omarchy Quattro
 - An x86-64 system
 - Fcitx 5, running in the graphical session
-- `systemd-libs`, required by the included `fcitx-state-monitor` helper
+- A C compiler, `pkgconf`, and `systemd-libs`, used to build the included
+  `fcitx-state-monitor` helper automatically when the plugin first loads
 - At least one input method configured in the active Fcitx group
 
 Install the runtime dependencies from the Arch repositories:
 
 ```sh
-sudo pacman -S fcitx5 fcitx5-gtk fcitx5-qt systemd-libs
+sudo pacman -S fcitx5 fcitx5-gtk fcitx5-qt base-devel pkgconf systemd-libs
 ```
 
 Install any input engines you want to use separately, then add them to the
