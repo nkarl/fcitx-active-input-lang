@@ -172,6 +172,7 @@ static int set_current_method(sd_bus *bus, const char *id) {
 int main(int argc, char **argv) {
     sd_bus *bus = NULL;
     char last_state[128] = "";
+    int result;
 
     if (sd_bus_default_user(&bus) < 0)
         return 1;
@@ -190,7 +191,21 @@ int main(int argc, char **argv) {
 
         // CurrentInputMethod has no change signal in Fcitx 5.1.21. Waiting on
         // the bus keeps this process asleep between inexpensive method calls.
-        sd_bus_wait(bus, 750000);
-        while (sd_bus_process(bus, NULL) > 0) {}
+        result = sd_bus_wait(bus, 750000);
+        if (result < 0) {
+            fprintf(stderr, "failed to wait on user bus: %s\n",
+                    strerror(-result));
+            break;
+        }
+
+        while ((result = sd_bus_process(bus, NULL)) > 0) {}
+        if (result < 0) {
+            fprintf(stderr, "failed to process user bus: %s\n",
+                    strerror(-result));
+            break;
+        }
     }
+
+    sd_bus_unref(bus);
+    return 1;
 }
