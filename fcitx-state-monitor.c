@@ -3,6 +3,14 @@
 #include <string.h>
 #include <systemd/sd-bus.h>
 
+static int contains_control_character(const char *value) {
+    for (const unsigned char *p = (const unsigned char *)value; *p; p++) {
+        if (*p < ' ' || *p == 0x7f)
+            return 1;
+    }
+    return 0;
+}
+
 static void publish_current_state(sd_bus *bus, char *last_state, size_t size) {
     sd_bus_error error = SD_BUS_ERROR_NULL;
     sd_bus_message *reply = NULL;
@@ -22,6 +30,7 @@ static void publish_current_state(sd_bus *bus, char *last_state, size_t size) {
         result = sd_bus_message_read(reply, "s", &state);
 
     if (result >= 0 && state && state[0] != '\0' &&
+        !contains_control_character(state) &&
         strncmp(state, last_state, size) != 0) {
         snprintf(last_state, size, "%s", state);
         puts(last_state);
@@ -135,11 +144,21 @@ static int list_group_methods(sd_bus *bus) {
                                      &icon, &label, &language, &configurable);
         if (result < 0)
             break;
+        if (!id || contains_control_character(id)) {
+            sd_bus_message_exit_container(reply);
+            continue;
+        }
+
         for (size_t i = 0; i < group_count; i++) {
             if (strcmp(group_ids[i], id) == 0) {
+                const char *safe_name =
+                    name && name[0] && !contains_control_character(name)
+                        ? name : id;
+                const char *safe_language =
+                    language && !contains_control_character(language)
+                        ? language : "";
                 printf("%zu\t%s\t%s\t%s\n", i, id,
-                       name && name[0] ? name : id,
-                       language ? language : "");
+                       safe_name, safe_language);
                 break;
             }
         }
