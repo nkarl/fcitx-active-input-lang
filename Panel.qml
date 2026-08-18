@@ -123,11 +123,6 @@ Panel {
 
                     PanelSeparator { width: parent.width }
 
-                    PanelSectionHeader {
-                        width: parent.width
-                        text: "CYCLE PRIORITY"
-                    }
-
                     Column {
                         width: parent.width
                         spacing: Style.space(6)
@@ -287,7 +282,7 @@ Panel {
                                         Button {
                                             visible: queueRow.index > 0
                                             text: "−"
-                                            tooltipText: "Remove from cycle"
+                                            tooltipText: "Remove from switch list"
                                             onClicked: {
                                                 queueRow.panelOwner.editingIndex = -1
                                                 if (queueRow.panelOwner.hostWidget)
@@ -327,7 +322,9 @@ Panel {
                         Text {
                             visible: root.unselectedMethods.length === 0
                             width: parent.width
-                            text: "All configured input methods are already in the cycle."
+                            text: root.availableMethods.length === 0
+                                ? "No input methods were found in the active Fcitx group."
+                                : "All input methods in the active Fcitx group have been added."
                             color: Util.alpha(root.contentForeground, 0.64)
                             font.family: root.contentFontFamily
                             font.pixelSize: Style.font.caption
@@ -358,6 +355,16 @@ Panel {
                                     }
                                 }
                             }
+                        }
+
+                        Text {
+                            width: parent.width
+                            text: "To show more choices here, add them to the active group in "
+                                + "Fcitx 5 Configuration, then close and reopen this list."
+                            color: Util.alpha(root.contentForeground, 0.64)
+                            font.family: root.contentFontFamily
+                            font.pixelSize: Style.font.caption
+                            wrapMode: Text.WordWrap
                         }
                     }
                 }

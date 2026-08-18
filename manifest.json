@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "author": "Charles Nguyen",
   "license": "MIT",
-  "description": "Display the language of your active input method. Configure and cycle through selected input methods. Works with Fcitx 5 input methods.",
+  "description": "Display the language of your active input method. Configure and switch between selected Fcitx 5 input methods.",
   "kinds": ["bar-widget", "service"],
   "entryPoints": {
     "barWidget": "BarWidget.qml",
